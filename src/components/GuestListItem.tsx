@@ -1,4 +1,5 @@
 import { Guest } from "../types/guestListTypes";
+import Avatar from "./Avatar";
 
 const GuestListItem: React.FC<{
   guest: Guest;
@@ -6,13 +7,23 @@ const GuestListItem: React.FC<{
 }> = ({ guest, onGuestClick }) => (
   <li
     onClick={() => onGuestClick(guest)}
-    className={`p-4 rounded-lg transition-all duration-200 flex justify-between items-center cursor-pointer ${
+    className={`p-3 rounded-lg transition-all duration-200 flex items-center gap-4 cursor-pointer ${
       guest.seated
-        ? "bg-gray-100 text-gray-400 line-through hover:bg-gray-200"
+        ? "bg-gray-100 opacity-50"
         : "bg-gray-50 hover:bg-purple-100 hover:shadow-md"
     }`}
   >
-    {guest.name}
+    <Avatar name={guest.name} isSeated={guest.seated} />
+    <div className="flex-grow">
+      <span
+        className={`font-medium text-gray-800 ${
+          guest.seated ? "line-through" : ""
+        }`}
+      >
+        {guest.name}
+      </span>
+    </div>
+    <span className="text-sm text-gray-500">Table {guest.table}</span>
   </li>
 );
 

@@ -1,4 +1,5 @@
 import { Guest } from "../types/guestListTypes";
+import Avatar from "./Avatar";
 
 interface GuestModalProps {
   guest: Guest | null;
@@ -24,6 +25,9 @@ const GuestModal: React.FC<GuestModalProps> = ({
               On small screens and up (sm:), it reverts to a standard card with auto height and max-width.
             */}
       <div className="bg-white w-full h-full flex flex-col justify-center p-6 text-center shadow-xl transform transition-transform duration-300 sm:h-auto sm:max-w-sm sm:rounded-2xl sm:p-8">
+        <div className="flex justify-center mb-4">
+          <Avatar name={guest.name} size="lg" />
+        </div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">{guest.name}</h2>
         <p className="text-lg text-gray-600">Stă la</p>
         <p className="text-5xl font-bold text-purple-600 my-4">
