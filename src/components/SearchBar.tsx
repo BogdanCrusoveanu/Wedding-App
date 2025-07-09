@@ -6,7 +6,7 @@ const SearchBar: React.FC<{
   <div className="relative mb-4">
     <input
       type="text"
-      placeholder="Search by name or table number..."
+      placeholder="Caută numele unui invitat sau numărul mesei..."
       value={searchTerm}
       onChange={(e) => onSearchChange(e.target.value)}
       className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"

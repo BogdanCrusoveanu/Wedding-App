@@ -14,19 +14,19 @@ const StatsView: React.FC<{
             <strong className="font-semibold text-gray-900">
               {totalCount}
             </strong>{" "}
-            Număr de invitați
+            Invitați
           </p>
           <p className="text-gray-700">
             <strong className="font-semibold text-gray-900">
               {tableCount}
             </strong>{" "}
-            Număr de mese
+            Mese
           </p>
           <p className="text-gray-700">
             <strong className="font-semibold text-gray-900">
               {(totalCount / tableCount).toFixed(1)}
             </strong>{" "}
-            Invitați în medie la masă
+            Invitați asezați
           </p>
         </div>
       </>
