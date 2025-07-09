@@ -6,7 +6,7 @@ const GuestList: React.FC<{
   loading: boolean;
   onGuestClick: (guest: Guest) => void;
 }> = ({ guests, loading, onGuestClick }) => (
-  <div className="h-80 overflow-y-auto pr-2 border-t border-b border-gray-200">
+  <div className="h-80 overflow-y-auto pr-2 border-t border-b border-gray-200 animate-fade-in">
     {loading ? (
       <p className="text-center text-gray-500 py-10">
         Se incarca lista de invitati...

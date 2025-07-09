@@ -5,4 +5,10 @@ export interface Guest {
   seated: boolean;
 }
 
+export interface TableInfo {
+  tableNumber: number;
+  guests: Guest[];
+  seatedCount: number;
+}
+
 export type NewGuest = Omit<Guest, "id">;

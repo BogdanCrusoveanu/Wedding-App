@@ -1,4 +1,4 @@
-import { NewGuest } from "../../types/guestListTypes";
+import { NewGuest } from "../types/guestListTypes";
 
 export const initialGuests: NewGuest[] = [
   // Masa 1
@@ -19,4 +19,5 @@ export const initialGuests: NewGuest[] = [
   { name: "Mihaela Tudoran", table: 2, seated: false },
   { name: "Chiurtu Alexandru", table: 2, seated: false },
   { name: "Laura Pirvu", table: 2, seated: false },
+  //Masa 3
 ];

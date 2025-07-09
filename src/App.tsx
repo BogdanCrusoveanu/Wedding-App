@@ -17,7 +17,20 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getAuth, Auth, signInAnonymously } from "firebase/auth";
-import { initialGuests } from "./components/constants/constants";
+import { initialGuests } from "./constants/constants";
+import ViewToggle from "./components/ViewToggle";
+import TableView from "./components/TableView";
+import StatsView from "./components/StatsView";
+
+const animationStyle = `
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+`;
 
 const firebaseConfig = {
   apiKey: "AIzaSyAAn2ghEshy9-BYoi4VL9TM3xrsKsPtiiA",
@@ -38,6 +51,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSeeding, setIsSeeding] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"guest" | "table" | "stats">(
+    "guest"
+  );
 
   useEffect(() => {
     try {
@@ -124,6 +140,25 @@ const App: React.FC = () => {
     }
   };
 
+  const tables = useMemo(() => {
+    const groupedByTable = guests.reduce((acc, guest) => {
+      const tableNum = guest.table;
+      if (!acc[tableNum]) {
+        acc[tableNum] = [];
+      }
+      acc[tableNum].push(guest);
+      return acc;
+    }, {} as Record<number, Guest[]>);
+
+    return Object.entries(groupedByTable)
+      .map(([tableNumber, tableGuests]) => ({
+        tableNumber: parseInt(tableNumber),
+        guests: tableGuests,
+        seatedCount: tableGuests.filter((g) => g.seated).length,
+      }))
+      .sort((a, b) => a.tableNumber - b.tableNumber);
+  }, [guests]);
+
   const filteredAndSortedGuests = useMemo(() => {
     const normalizedSearch = searchTerm.toLowerCase().trim();
 
@@ -147,33 +182,78 @@ const App: React.FC = () => {
       });
   }, [guests, searchTerm]);
 
-  return (
-    <div className="bg-gray-100 font-sans">
-      <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
-          <Header />
-          <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+  const handleTableClick = (tableNumber: number) => {
+    setViewMode("guest");
+    setSearchTerm(tableNumber.toString());
+  };
+
+  const seatedCount = useMemo(
+    () => guests.filter((g) => g.seated).length,
+    [guests]
+  );
+
+  const renderCurrentView = () => {
+    switch (viewMode) {
+      case "guest":
+        return (
           <GuestList
             guests={filteredAndSortedGuests}
             loading={loading}
             onGuestClick={setSelectedGuest}
           />
-          {guests.length === 0 && !loading && (
-            <Seeder
-              onSeed={seedDatabase}
-              isSeeding={isSeeding}
-              isAuthReady={!!userId}
+        );
+      case "table":
+        return (
+          <TableView
+            tables={tables}
+            loading={loading}
+            onTableClick={handleTableClick}
+          />
+        );
+      case "stats":
+        return (
+          <StatsView
+            seatedCount={seatedCount}
+            totalCount={guests.length}
+            tableCount={tables.length}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      <style>{animationStyle}</style>
+      <div className="bg-gray-100 font-sans">
+        <div className="flex items-center justify-center min-h-screen p-4">
+          <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            <Header seatedCount={seatedCount} totalCount={guests.length} />
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              onClear={() => setSearchTerm("")}
             />
-          )}
+            <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+            <div key={viewMode}>{renderCurrentView()}</div>
+            {guests.length === 0 && !loading && (
+              <Seeder
+                onSeed={seedDatabase}
+                isSeeding={isSeeding}
+                isAuthReady={!!userId}
+              />
+            )}
+          </div>
         </div>
+        <GuestModal
+          guest={selectedGuest}
+          onClose={() => setSelectedGuest(null)}
+          onMarkSeated={(id) => updateGuestSeating(id, true)}
+          onResetSeating={(id) => updateGuestSeating(id, false)}
+        />
       </div>
-      <GuestModal
-        guest={selectedGuest}
-        onClose={() => setSelectedGuest(null)}
-        onMarkSeated={(id) => updateGuestSeating(id, true)}
-        onResetSeating={(id) => updateGuestSeating(id, false)}
-      />
-    </div>
+    </>
   );
 };
 
