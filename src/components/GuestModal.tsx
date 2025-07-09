@@ -49,7 +49,7 @@ const GuestModal: React.FC<GuestModalProps> = ({
             onClick={onClose}
             className="w-full font-medium bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
           >
-            Inclide
+            Închide
           </button>
         </div>
       </div>
