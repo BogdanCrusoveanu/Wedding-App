@@ -125,10 +125,21 @@ const App: React.FC = () => {
   };
 
   const filteredAndSortedGuests = useMemo(() => {
+    const normalizedSearch = searchTerm.toLowerCase().trim();
+
     return guests
-      .filter((guest) =>
-        guest.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      .filter((guest) => {
+        // If search is empty, show all guests
+        if (!normalizedSearch) return true;
+
+        // Check for match in guest name
+        const nameMatch = guest.name.toLowerCase().includes(normalizedSearch);
+
+        // Check for an exact match in table number
+        const tableMatch = guest.table.toString() === normalizedSearch;
+
+        return nameMatch || tableMatch;
+      })
       .sort((a, b) => {
         if (a.seated !== b.seated)
           return (a.seated ? 1 : 0) - (b.seated ? 1 : 0);
