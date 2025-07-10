@@ -42,7 +42,7 @@ const PieChart: React.FC<{
         <span className="text-2xl font-bold text-gray-800">
           {Math.round(percentage * 100)}%
         </span>
-        <span className="text-xs text-gray-500">Așezați</span>
+        <span className="text-xs text-gray-500">Au ajuns</span>
       </div>
     </div>
   );

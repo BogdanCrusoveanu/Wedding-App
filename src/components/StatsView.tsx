@@ -22,12 +22,6 @@ const StatsView: React.FC<{
             </strong>{" "}
             Mese
           </p>
-          <p className="text-gray-700">
-            <strong className="font-semibold text-gray-900">
-              {(totalCount / tableCount).toFixed(1)}
-            </strong>{" "}
-            Invitați asezați
-          </p>
         </div>
       </>
     ) : (

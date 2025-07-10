@@ -108,7 +108,6 @@ const App: React.FC = () => {
     try {
       await updateDoc(guestDocRef, { seated: seatedStatus });
       setSelectedGuest(null);
-      setSearchTerm(""); // Reset search term after updating status
     } catch (error) {
       console.error("Error updating guest status:", error);
     }

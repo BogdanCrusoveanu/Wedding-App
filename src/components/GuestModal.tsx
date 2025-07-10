@@ -46,7 +46,7 @@ const GuestModal: React.FC<GuestModalProps> = ({
               onClick={() => onMarkSeated(guest.id)}
               className="w-full font-medium bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors border-2 border-green-700"
             >
-              Marchează ca așezat
+              Așează la masă
             </button>
           )}
           <button
