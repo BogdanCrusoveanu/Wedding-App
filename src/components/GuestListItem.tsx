@@ -23,7 +23,7 @@ const GuestListItem: React.FC<{
         {guest.name}
       </span>
     </div>
-    <span className="text-sm text-gray-500">Table {guest.table}</span>
+    <span className="text-sm text-gray-500">Masa {guest.table}</span>
   </li>
 );
 
